@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm -rf ../config
+cp -rf ../breakingbot-deployments/config ../config
+cp ../breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ../lib/boundary/report-platforms/wpcom.ts
+tsc

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+export HUBOT_HTTPD=false
+export HUBOT_HELP_HIDDEN_COMMANDS="adapter,echo,echo <text>,help,help <query>,ping,time"
+export HUBOT_HELP_DISABLE_HTTP=true
+export TZ="UTC"
+exec node_modules/.bin/hubot --name "breakingbot" --require "dist/lib/boundary/hubot/scripts" "$@"

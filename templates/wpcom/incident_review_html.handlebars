@@ -1,0 +1,112 @@
+<h2>Summary</h2>
+<blockquote>
+  {{data.summary}}
+</blockquote>
+
+<h2>Contributing Factors</h2>
+<ul>
+  {{#if data.factors}}
+    {{#each data.factors}}
+      <li>{{{this}}}</li>
+    {{/each}}
+  {{else}}
+    <li><em>[Please add]</em></li>
+  {{/if}}
+</ul>
+
+<h2>Timeline</h2>
+
+<p><em>All times UTC.</em></p>
+
+<ul>
+  <li><span>{{data.genesisAt}}</span> Incident started</li>
+  <li><span>{{data.detectedAt}}</span> Incident detected</li>
+  <li><span>{{data.breakingAt}}</span> ({{data.breakingBy}}): Breaking channel started</li>
+  {{#each data.timeline}}
+  <li>
+    {{#if contextUrl}}
+      <span><a href="{{contextUrl}}">{{createdAt}}</a> ({{createdBy}}):</span> {{{text}}}
+    {{else}}
+      <span>{{createdAt}}</span> ({{createdBy}}): {{{text}}}
+    {{/if}}
+  </li>
+  {{/each}}
+</ul>
+
+<h3>Duration</h3>
+<p>
+<b>Detected to Mitigated:</b> {{data.duration.dtm}}</br>
+<b>Detected to Resolved:</b> {{data.duration.dtr}}</br>
+<b>Genesis to Resolved:</b> {{data.duration.total}}</br>
+</p>
+
+{{#if data.affected}}
+<h2>Affected Customers</h2>
+<ul>
+  {{#each data.affected}}
+    <li>{{{this}}}</li>
+  {{/each}}
+</ul>
+{{/if}}
+
+<h2>Impact</h2>
+<p>Update the <code>.priority</code> to be the peak calibrated priority of the incident. Justify that priority by describing the impact and severity of the incident</p>
+<ul>
+  <li><strong>Priority:</strong> {{data.priorityName}}</li>
+  <li><strong>Impact:</strong> Please try to describe this from multiple angles, i.e. how this impacted users, vendors, Trust & Safety, Community Support, Engineering, overall morale, sleep patterns, etc.</li>
+  <li><strong>Severity:</strong> Use whatever method of quantification works for you. Do you have SLAs? Units like req/s, dataloss, error counts, $$$, number of users impacted per hours/day, etc make sense here.</li>
+</ul>
+
+<h2>Remediation</h2>
+
+<p><em>[What steps were taken to resolve the issue? Was the issue fully resolved, or are there remaining follow-up tasks? (e.g. /data cleanup)]</em></p>
+
+{{#if data.prs}}
+<h3>Code Changes</h3>
+<ul>
+  {{#each data.prs}}
+    <li>{{{this}}}</li>
+  {{/each}}
+</ul>
+{{/if}}
+
+{{#if data.actionItems}}
+<h3>Action Items</h3>
+<ul>
+  {{#each data.actionItems}}
+    <li>{{{text}}}</li>
+  {{/each}}
+</ul>
+{{/if}}
+
+<h2>Good & Bad</h2>
+<p>Discuss how we handled this breaking.</p>
+<ul>
+  <li>Did we respond quickly?</li>
+  <li>Did our monitoring catch the issue or was it a person?</li>
+  <li>Did we communicate properly and in a timely manner?</li>
+  <li>Did a tweet go out if it was needed?</li>
+  <li>Did we break the internet?</li>
+</ul>
+
+<h2>Discussion</h2>
+<ul>
+  <li>Is this a recurring incident? Why?</li>
+  <li>Could testing (unit/functional/integration/manual) have caught this?</li>
+  <li>Did our automated alerting catch this? Enumerate any relevant pages below. Can we automate detection and/or remediation?</li>
+  <li>Do we have all cleanup items ticketed and linked to the tracking issue?</li>
+  <li>If this incident was caused by a PR, were the testing instructions adequate?</li>
+  <li>Can we make changes like this more testable?</li>
+</ul>
+
+<h2>Improvement</h2>
+
+[<em>What steps can we take to ensure this doesn't happen again?</em>]
+
+<h2>Related Artifacts</h2>
+{{#if data.chatRoomUrl}}
+<p>Chat Room: {{data.chatRoomUrl}}/{{data.chatRoomUid}}</p>
+{{/if}}
+{{#if data.trackingIssueBaseUrl}}
+<p>Tracking Issue: {{data.trackingIssueBaseUrl}}/{{data.trackerUid}}</p>
+{{/if}}

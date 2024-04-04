@@ -1,0 +1,64 @@
+This issue tracks a breaking incident that is {{#if data.isIncidentActive}}*ACTIVE*{{else}}*RESOLVED*{{/if}}.
+
+h2. Overview
+
+| *Started by*       | {{data.createdBy}}                         |
+| *Started at*       | {{data.createdAt}}                         |
+{{#unless data.isIncidentActive}}
+| *Resolved at*      | {{data.resolvedAt}}                        |
+{{/unless}}
+| *Where*            | [{{data.chatRoomName}}|{{data.chatRoomUrl}}/{{data.chatRoomUid}}] |
+{{#if data.blockers}}
+| *Blocked by*       | {{#each data.blockers}}* {{this}}{{/each}} |
+{{/if}}
+
+h2. Summary
+
+{{#if data.summary}}
+{quote}{{data.summary}}{quote}
+{{else}}
+{quote}{{data.title}}{quote}
+{{/if}}
+
+h2. Contributing Factors
+
+{{#if data.factors}}
+{{#each data.factors}}
+* {{&this}}
+{{/each}}
+{{else}}
+* TBD
+{{/if}}
+
+h2. Timeline
+
+{{#if data.genesisAt}}
+* {{data.genesisAt}}: Incident started
+{{/if}}
+{{#if data.detectedAt}}
+* {{data.detectedAt}}: Incident detected
+{{/if}}
+* {{data.createdAt}} {{data.createdBy}}: Breaking channel started
+{{#each data.timeline}}
+{{#if contextUrl}}
+* [{{createdAt}}|{{contextUrl}}] {{createdBy}}: {{&text}}
+{{else}}
+* {{createdAt}} {{createdBy}}: {{&text}}
+{{/if}}
+{{/each}}
+
+{{#if data.notes}}
+h2. Notes
+
+{{#each data.notes}}
+* {{&this}}
+{{/each}}
+{{/if}}
+
+{{#if data.affected}}
+h2. Affected
+
+{{#each data.affected}}
+* {{&this}}
+{{/each}}
+{{/if}}

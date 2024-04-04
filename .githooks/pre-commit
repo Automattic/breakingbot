@@ -1,0 +1,4 @@
+#! /bin/sh
+
+npx biome check --apply --changed --no-errors-on-unmatched --files-ignore-unknown=true
+git update-index --again

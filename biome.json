@@ -1,0 +1,30 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"all": true,
+			"complexity": {
+				"all": true,
+				"useSimplifiedLogicExpression": "off"
+			},
+			"style": {
+				"all": true,
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": { "filenameCases": ["kebab-case"] }
+				}
+			},
+			"nursery": {
+				"all": false,
+				"noDuplicateJsonKeys": "error"
+			}
+		}
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"defaultBranch": "trunk",
+		"useIgnoreFile": true
+	}
+}
