@@ -1,0 +1,35 @@
+#!/bin/sh
+
+git clone git@github.com:Automattic/breakingbot-deployments.git
+
+find ./config -mindepth 1 ! -name 'gifs.ts' -exec rm -rf {} \;
+
+cp ./breakingbot-deployments/config/index.ts ./config
+
+# Construct the priorities file path based on the APP_ENV variable
+ENV_PRIORITIES_FILE="./breakingbot-deployments/config/$APP_ENV/priorities.ts"
+
+# Check if the environment-specific file exists
+if [ -f "$ENV_PRIORITIES_FILE" ]; then
+    # If the file exists for the selected environment, copy it
+    cp "$ENV_PRIORITIES_FILE" ./config/
+else
+    # If the file does not exist, copy the default file
+    cp ./breakingbot-deployments/config/priorities.ts ./config/
+fi
+
+# Construct the config file path based on the APP_ENV variable
+CONFIG_FILE="./breakingbot-deployments/config/$APP_ENV/config.ts"
+
+# Get the environment-specific config file or error out
+if [ -f "$CONFIG_FILE" ]; then
+    cp "$CONFIG_FILE" ./config/config.ts
+else
+    echo "Error: Config file does not exist for the selected environment ($APP_ENV)."
+    exit 1
+fi
+
+# Install the a8c WP.com reporter
+cp ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
+
+rm -rf ./breakingbot-deployments

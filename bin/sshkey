@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -e
+
+echo "-----> Install a8c-config-ssh-key"
+
+if [ -z "$CONFIG_SSH_KEY" ]; then
+    echo "       Did you forget to set A8C_CONFIG_SSH_KEY?"
+    exit 1
+fi
+
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# ignore/hide ssh warnings
+echo "Host *" >> ~/.ssh/config
+echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+echo "   UserKnownHostsFile /dev/null" >> ~/.ssh/config
+echo "   LogLevel ERROR" >> ~/.ssh/config
+
+# install the ssh key
+ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
+echo "$A8C_CONFIG_SSH_KEY" > ~/.ssh/id_ed25519
+chmod 600 ~/.ssh/id_ed25519
+echo "-----> Installed SSH key from A8C_CONFIG_SSH_KEY"

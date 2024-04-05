@@ -7,9 +7,11 @@ let config: AppConfig;
 
 switch (process.env.APP_ENV) {
 	case "prod": {
+		// Add your prod env config here
 		break;
 	}
 	case "staging": {
+		// Add your staging env config here
 		break;
 	}
 	case "test": {
