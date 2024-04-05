@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { testConfig } from "../../../config/test.js";
+import { config } from "../../../config/index.js";
 import { createIncident } from "../../../test/index.js";
 import {
 	isHighPriority,
@@ -10,7 +10,7 @@ import {
 	priorityName,
 } from "../priority.js";
 
-const { priorities: testPriorityCfg } = testConfig;
+const { priorities: testPriorityCfg } = config;
 
 describe("priority.ts", () => {
 	describe("priorityName", () => {
