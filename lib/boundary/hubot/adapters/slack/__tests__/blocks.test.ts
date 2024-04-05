@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { anyString } from "vitest-mock-extended";
-import { testConfig } from "../../../../../../config/test.js";
+import { config } from "../../../../../../config/index.js";
 import { createLogEntry } from "../../../../../../test/index.js";
 import {
 	aiBlocks,
@@ -208,7 +208,7 @@ describe("slack/blocks.ts", () => {
 	});
 
 	test("priorityBlocks", () => {
-		expect(priorityBlocks(testConfig.priorities)).toStrictEqual([
+		expect(priorityBlocks(config.priorities)).toStrictEqual([
 			{
 				text: {
 					emoji: true,

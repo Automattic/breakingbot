@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { mockDeep } from "vitest-mock-extended";
-import { testConfig } from "../../../../../../config/test.js";
+import { config } from "../../../../../../config/index.js";
 import {
 	createBlocker,
 	createIncident,
@@ -52,7 +52,7 @@ describe("slack/string.ts", () => {
 		test("active incident without roles and without blockage", () => {
 			const inactiveIncident = createIncident({
 				title: "Test Incident Low Priority",
-				priority: testConfig.priorities.defaultLow,
+				priority: config.priorities.defaultLow,
 			});
 
 			const topic = fmtIncidentTopic(inactiveIncident);

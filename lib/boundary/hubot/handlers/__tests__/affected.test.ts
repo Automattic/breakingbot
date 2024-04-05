@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { type DeepMockProxy, mockDeep } from "vitest-mock-extended";
-import { testConfig } from "../../../../../config/test.js";
+import { config } from "../../../../../config/index.js";
 import {
 	TEST_ROOM,
 	createIncident,
@@ -17,7 +17,7 @@ describe("affected.ts", () => {
 	beforeEach(() => {
 		robot = mockDeep<BreakingBot>();
 		// @ts-expect-error
-		robot.config = { ...testConfig };
+		robot.config = { ...config };
 		// @ts-expect-error
 		robot.incidents[TEST_ROOM] = newIncidentMachine(createIncident());
 	});

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { type DeepMockProxy, mockDeep } from "vitest-mock-extended";
-import { testConfig } from "../../../../../config/test.js";
+import { config } from "../../../../../config/index.js";
 import {
 	TEST_ROOM,
 	TEST_TRACKER,
@@ -57,7 +57,7 @@ describe("incident.ts", () => {
 	beforeEach(() => {
 		robot = mockDeep<BreakingBot>();
 		// @ts-expect-error
-		robot.config = { ...testConfig };
+		robot.config = { ...config };
 		// @ts-expect-error
 		robot.incidents[TEST_ROOM] = newIncidentMachine({ ...newIncident });
 		// @ts-expect-error
@@ -95,7 +95,7 @@ describe("incident.ts", () => {
 		test("success low priority", async () => {
 			robot.db.transaction.mockResolvedValue({
 				...newIncidentDbRecord,
-				priority: testConfig.priorities.defaultLow,
+				priority: config.priorities.defaultLow,
 			});
 
 			mockFluentDbUpdateOnce(robot, null);
@@ -105,7 +105,7 @@ describe("incident.ts", () => {
 				robot,
 				"test123!",
 				"juan",
-				testConfig.priorities.defaultLow,
+				config.priorities.defaultLow,
 			);
 
 			expect(robot.db.transaction).toHaveBeenCalledTimes(1);

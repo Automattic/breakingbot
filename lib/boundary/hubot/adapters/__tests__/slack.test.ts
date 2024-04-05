@@ -2,7 +2,7 @@ import type { SocketModeClient } from "@slack/socket-mode";
 import type { WebClient } from "@slack/web-api";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { type DeepMockProxy, anyArray, mockDeep } from "vitest-mock-extended";
-import { testConfig } from "../../../../../config/test.js";
+import { config } from "../../../../../config/index.js";
 import { createIncident, createLogEntry } from "../../../../../test/index.js";
 import type { BreakingBot } from "../../../../types/index.js";
 import { Slack } from "../slack.js";
@@ -154,7 +154,7 @@ describe("slack.ts", () => {
 		test("success", async () => {
 			const incident = createIncident();
 
-			await slack.introNewIncident(incident, testConfig, "BREAKING-123");
+			await slack.introNewIncident(incident, config, "BREAKING-123");
 
 			expect(webClient.conversations.setTopic).toHaveBeenCalledWith({
 				channel: incident.chatRoomUid,
@@ -178,7 +178,7 @@ describe("slack.ts", () => {
 		test("no chat room errors out", () => {
 			const incident = createIncident({ chatRoomUid: null });
 			expectProcessExit(async () =>
-				slack.introNewIncident(incident, testConfig, "BREAKING-123"),
+				slack.introNewIncident(incident, config, "BREAKING-123"),
 			);
 		});
 	});
@@ -924,11 +924,11 @@ describe("slack.ts", () => {
 	});
 
 	test("sendPriorities", async () => {
-		await slack.sendPriorities("C8732838", testConfig.priorities, "m405");
+		await slack.sendPriorities("C8732838", config.priorities, "m405");
 
 		expect(webClient.chat.postMessage).toHaveBeenCalledWith(
 			expect.objectContaining({
-				blocks: priorityBlocks(testConfig.priorities),
+				blocks: priorityBlocks(config.priorities),
 				channel: "C8732838",
 				text: "Priorities: P1, P2, P3, P4, P5",
 				// biome-ignore lint/style/useNamingConvention: Slack defined
@@ -1023,13 +1023,13 @@ describe("slack.ts", () => {
 	});
 
 	test("sendHelpMessage", async () => {
-		await slack.sendHelpMessage("C8732838", testConfig, "m405");
+		await slack.sendHelpMessage("C8732838", config, "m405");
 
 		expect(webClient.chat.postMessage).toHaveBeenCalledWith(
 			expect.objectContaining({
-				blocks: helpBlocks(testConfig),
+				blocks: helpBlocks(config),
 				channel: "C8732838",
-				text: `Help: ${testConfig.runbookRootUrl}`,
+				text: `Help: ${config.runbookRootUrl}`,
 				// biome-ignore lint/style/useNamingConvention: Slack defined
 				thread_ts: "m405",
 				// biome-ignore lint/style/useNamingConvention: Slack defined
@@ -1040,7 +1040,7 @@ describe("slack.ts", () => {
 
 	describe("sendMaintenanceAlert", () => {
 		test("send without specific message", async () => {
-			await slack.sendMaintenanceAlert(testConfig.commPlatform, "C784574");
+			await slack.sendMaintenanceAlert(config.commPlatform, "C784574");
 
 			expect(webClient.chat.postMessage).toHaveBeenCalledWith(
 				expect.objectContaining({
@@ -1055,7 +1055,7 @@ describe("slack.ts", () => {
 
 		test("send with specific message", async () => {
 			await slack.sendMaintenanceAlert(
-				testConfig.commPlatform,
+				config.commPlatform,
 				"C784574",
 				"oof, ouch, bammy happened",
 			);
@@ -1072,7 +1072,7 @@ describe("slack.ts", () => {
 		});
 
 		test("send with mention without specific message", async () => {
-			const cfg = { ...testConfig.commPlatform, botEngSubteamId: "S278874" };
+			const cfg = { ...config.commPlatform, botEngSubteamId: "S278874" };
 
 			await slack.sendMaintenanceAlert(cfg, "C784574");
 
@@ -1092,7 +1092,7 @@ describe("slack.ts", () => {
 		});
 
 		test("send with mention with specific message", async () => {
-			const cfg = { ...testConfig.commPlatform, botEngSubteamId: "S278874" };
+			const cfg = { ...config.commPlatform, botEngSubteamId: "S278874" };
 
 			await slack.sendMaintenanceAlert(
 				cfg,
@@ -1116,7 +1116,7 @@ describe("slack.ts", () => {
 		});
 
 		test("send without channel does noting", async () => {
-			await slack.sendMaintenanceAlert(testConfig.commPlatform);
+			await slack.sendMaintenanceAlert(config.commPlatform);
 			expect(webClient.chat.postMessage).not.toHaveBeenCalled();
 		});
 	});
