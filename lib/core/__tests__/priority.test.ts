@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
 import { config } from "../../../config/index.js";
-import { createIncident } from "../../../test/index.js";
 import {
 	isHighPriority,
 	isReportRequiredForPriority,
@@ -8,6 +7,7 @@ import {
 	isValidPriority,
 	priorityEmoji,
 	priorityName,
+	priorityUrl,
 } from "../priority.js";
 
 const { priorities: testPriorityCfg } = config;
@@ -15,15 +15,34 @@ const { priorities: testPriorityCfg } = config;
 describe("priority.ts", () => {
 	describe("priorityName", () => {
 		test("P2", () => {
-			const incident = createIncident({ priority: 2 });
-			expect(priorityName(incident.priority, testPriorityCfg)).toBe("P2");
+			expect(priorityName(2, testPriorityCfg)).toBe("P2");
 		});
 	});
 
 	describe("priorityEmoji", () => {
 		test("P1", () => {
-			const incident = createIncident({ priority: 1 });
-			expect(priorityEmoji(incident.priority, testPriorityCfg)).toBe("fire");
+			expect(priorityEmoji(1, testPriorityCfg)).toBe("fire");
+		});
+	});
+
+	describe("priorityUrl", () => {
+		test("P1", () => {
+			const cfg = {
+				...testPriorityCfg,
+				priorities: {
+					...testPriorityCfg.priorities,
+					1: {
+						...testPriorityCfg.priorities[1],
+						url: "https://unit-test.local/p1",
+					},
+				},
+			};
+
+			expect(priorityUrl(1, cfg)).toBe("https://unit-test.local/p1");
+		});
+
+		test("P85", () => {
+			expect(priorityUrl(85, testPriorityCfg)).toBeNull();
 		});
 	});
 
