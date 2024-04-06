@@ -20,9 +20,12 @@ export const priorityDescription = (
 	return p ? p.description : "unknown";
 };
 
-export const priorityUrl = (priority: number, cfg = priorityConfig): string => {
+export const priorityUrl = (
+	priority: number,
+	cfg = priorityConfig,
+): string | null => {
 	const p = cfg.priorities[priority];
-	return p ? p.url : "#";
+	return p?.url ?? null;
 };
 
 export const priorityEmoji = (
