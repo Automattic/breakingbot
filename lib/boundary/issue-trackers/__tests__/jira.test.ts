@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test } from "vitest";
 import { anyObject, mockDeep } from "vitest-mock-extended";
-import { testJiraConfig } from "../../../../config/test.js";
 import {
 	TEST_TRACKER,
 	createIncident,
@@ -14,6 +13,7 @@ import { Jira } from "../jira.js";
 
 import type { Version2Client, Version3Client } from "jira.js";
 import type { DeepMockProxy } from "vitest-mock-extended";
+import type { JiraConfig } from "../../../../config/index.js";
 import type { UserCache } from "../../../data/user-cache.js";
 import type { BreakingBot } from "../../../types/index.js";
 
@@ -234,3 +234,48 @@ describe("jira.ts", () => {
 		).toBe("<https://unit-test.jira.local/browse/BREAKING-123|BREAKING-123>");
 	});
 });
+
+const testJiraConfig: JiraConfig = {
+	type: "JIRA",
+	host: "unit-test.jira.local",
+	fields: {
+		platform: "customfield_10023",
+		epicName: "customfield_10100",
+		breakingPriority: "customfield_10101",
+		genesis: "customfield_10070",
+		detected: "customfield_10080",
+		acknowledged: "customfield_10119",
+		mitigated: "customfield_10001",
+		resolved: "customfield_10014",
+		incidentReview: "customfield_10084",
+		chatRoomUid: "customfield_10074",
+		incidentPointPerson: "customfield_10044",
+		incidentCommsPerson: "customfield_10045",
+	},
+	trackingIssue: {
+		projectKey: "BREAKINGT",
+		labels: ["unit-test-breaking"],
+	},
+	actionItems: {
+		projectKey: "BREAKINGT",
+		labels: ["unit-test-breaking-actionitem"],
+	},
+	transitions: {
+		[IncidentState.Started]: 1,
+		[IncidentState.Acknowledged]: 2,
+		[IncidentState.Mitigated]: 3,
+		[IncidentState.Blocked]: 4,
+		[IncidentState.Resolved]: 5,
+		[IncidentState.ReadyForReview]: 6,
+		[IncidentState.Completed]: 7,
+		[IncidentState.Archived]: 8,
+		[IncidentState.Canceled]: 9,
+	},
+	botAccount: {
+		id: "breakingbot",
+		jiraId: "339l9dunnaont93ndimoak",
+	},
+	breakingRoomPrefix: "unit-test-breaking-",
+	chatRoomUrl: "https://unit-test.slack.local/messages",
+	chatUserIdRegex: /(<@[UW][A-Z0-9]{5,19}>)|\b([UW][A-Z0-9]{5,19})\b/g,
+} as const;
