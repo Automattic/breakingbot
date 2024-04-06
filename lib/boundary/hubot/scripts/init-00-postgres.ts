@@ -29,8 +29,7 @@ export default async (robot: BreakingBot) => {
 		connectionString: process.env.DATABASE_URL,
 	};
 
-	// see: https://devcenter.heroku.com/articles/connecting-heroku-postgres#connecting-in-node-js
-	if (process.env.APP_ENV === "staging" || process.env.APP_ENV === "prod") {
+	if (robot.config.skipDbSslCertCheck) {
 		clientConfig.ssl = { rejectUnauthorized: false };
 	}
 
