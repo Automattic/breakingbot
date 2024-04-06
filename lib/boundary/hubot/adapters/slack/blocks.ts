@@ -639,6 +639,7 @@ export const resolvedBlocks = (
 	incident: Incident,
 	log: LogEntry[],
 	tracker: IssueTracker | undefined | null,
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: yeeup. I'll allow it. For now.
 ) => {
 	const channel = incident.chatRoomUid;
 	const title = incident.title.toUpperCase();
