@@ -639,6 +639,7 @@ export const resolvedBlocks = (
 	incident: Incident,
 	log: LogEntry[],
 	tracker: IssueTracker | undefined | null,
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: yeeup. I'll allow it. For now.
 ) => {
 	const channel = incident.chatRoomUid;
 	const title = incident.title.toUpperCase();
@@ -722,7 +723,9 @@ export const resolvedBlocks = (
 
 	const whoString = who.join(" or ");
 	const priority = incident.priority;
-	const fmtdPriority = `<${priorityUrl(priority)}|${priorityName(priority)}>`;
+	const pUrl = priorityUrl(priority);
+	const pName = priorityName(priority);
+	const fmtdPriority = pUrl ? `<${pUrl}|${pName}>` : pName;
 
 	const nextSteps = isReviewRequiredForPriority(priority)
 		? `> *Next Steps*\n>${whoString} should immediately \`.assign\` this incident to the owner of the affected component(s) whomst shall complete the report within one business day. If unsure, assign up to the relevant lead for triage.\n>\n>Use \`.next\` at anytime for guidance.`
