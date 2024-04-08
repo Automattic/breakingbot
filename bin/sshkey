@@ -1,8 +1,10 @@
 #!/bin/sh
 set -e
 
+echo "-----> Install a8c-config-ssh-key"
+
 if [ -z "$CONFIG_SSH_KEY" ]; then
-    echo "-----> Did you forget to set A8C_CONFIG_SSH_KEY?"
+    echo "       Did you forget to set A8C_CONFIG_SSH_KEY?"
     exit 1
 fi
 

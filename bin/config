@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+echo "-----> Installing app configs"
+
 # Clone the a8c app configs
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
 
