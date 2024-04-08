@@ -6,14 +6,11 @@ echo "-----> Installing app configs"
 # Clone the a8c app configs
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
 
-# Remove all existing app configs
-find ./config -mindepth 1 ! -name 'gifs.ts' ! -name 'priorities.ts' ! -name 'types.ts' -exec rm -rf {} \; -prune
-
 # Copy over our new app configs
-cp -r ./breakingbot-deployments/config/* ./config
+cp -rf ./breakingbot-deployments/config/* ./config
 
 # Install the a8c WP.com reporter
-cp ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
+cp -f ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
 
 rm -rf ./breakingbot-deployments
 
