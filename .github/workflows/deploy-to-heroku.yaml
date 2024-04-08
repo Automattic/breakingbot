@@ -1,0 +1,17 @@
+name: Deploy to Heroku
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [trunk]
+    types: [completed]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push to Heroku (staging/v3)
+        run: git push -f https://heroku:${{ secrets.HEROKU_API_TOKEN }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME_STAGING }}.git trunk:master

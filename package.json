@@ -5,13 +5,14 @@
 	"author": "WPVIP",
 	"license": "GPL-2.0-or-later",
 	"scripts": {
-		"build": "bin/build",
+		"build": "tsc",
 		"clean": "rimraf dist node_modules",
+		"heroku-prebuild": "bin/sshkey && bin/config",
+		"postinstall": "git rev-parse --is-inside-work-tree > /dev/null 2>&1 && git config core.hooksPath .githooks || exit 0",
 		"start": "bin/hubot -f ./dist/lib/boundary/hubot/adapters/slack.js",
 		"start:dev": "APP_ENV=dev tsc-watch --onSuccess 'bin/hubot -f ./dist/lib/boundary/hubot/adapters/slack.js'",
 		"test": "APP_ENV=test TZ=UTC vitest --watch=false",
-		"test:watch": "APP_ENV=test TZ=UTC vitest",
-		"postinstall": "git rev-parse --is-inside-work-tree > /dev/null 2>&1 && git config core.hooksPath .githooks || exit 0"
+		"test:watch": "APP_ENV=test TZ=UTC vitest"
 	},
 	"engines": {
 		"node": "20.x"
