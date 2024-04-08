@@ -52,8 +52,7 @@ import type {
 	RichTextBlock,
 	SectionBlock,
 } from "@slack/web-api";
-import type { AppConfig } from "../../../../../config/index.js";
-import type { PriorityConfig } from "../../../../../config/priorities.js";
+import type { AppConfig, PriorityConfig } from "../../../../../config/types.js";
 import type { DatetimeIso9075 } from "../../../../core/date.js";
 import type { Core4 } from "../../../../core/metrics.js";
 import type { Blocker } from "../../../../data/blocker.js";

@@ -78,12 +78,12 @@ import type {
 } from "@slack/web-api";
 import type { Envelope, Robot } from "hubot";
 import type { pino } from "pino";
-import {
-	type AppConfig,
-	type SlackConfig,
-	config,
-} from "../../../../config/index.js";
-import type { PriorityConfig } from "../../../../config/priorities.js";
+import { config } from "../../../../config/index.js";
+import type {
+	AppConfig,
+	PriorityConfig,
+	SlackConfig,
+} from "../../../../config/types.js";
 import type { DatetimeIso9075 } from "../../../core/date.js";
 import type { Blocker } from "../../../data/blocker.js";
 import type { Incident, IncidentOverview } from "../../../data/incident.js";

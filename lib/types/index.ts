@@ -1,6 +1,6 @@
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 import type * as jssm from "jssm";
-import type { AppConfig } from "../../config/index.js";
+import type { AppConfig } from "../../config/types.js";
 import type { CommPlatform } from "../boundary/comm-platform.js";
 import type { IssueTracker } from "../boundary/issue-tracker.js";
 import type { ReportPlatform } from "../boundary/report-platform.js";

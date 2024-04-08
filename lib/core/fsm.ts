@@ -1,5 +1,5 @@
 import * as jssm from "jssm";
-import type { NagConfig } from "../../config/priorities.js";
+import type { NagConfig } from "../../config/types.js";
 import type { NagState } from "../boundary/annoyotron.js";
 import {
 	type Incident,
