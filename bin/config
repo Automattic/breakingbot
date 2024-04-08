@@ -5,7 +5,7 @@ set -e
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
 
 # Remove all existing configs except the gifs and default priorities configs
-find ./config -mindepth 1 ! -name 'gifs.ts' ! -name 'priorities.ts' ! -name 'types.ts' -exec rm -rf {} \;
+find ./config -mindepth 1 ! -name 'gifs.ts' ! -name 'priorities.ts' ! -name 'types.ts' -exec rm -rf {} \; -prune
 
 # Copy over our new configs
 cp -r ./breakingbot-deployments/config/* ./config
