@@ -1,5 +1,5 @@
 import type pino from "pino";
-import type { WpcomReporterConfig } from "../../../config/index.js";
+import type { WpcomReporterConfig } from "../../../config/types.js";
 import type { Incident } from "../../data/incident.js";
 import type { LogEntry } from "../../data/log.js";
 import type { UserCache } from "../../data/user-cache.js";

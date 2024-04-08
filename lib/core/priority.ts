@@ -1,12 +1,9 @@
-import {
-	type NagConfig,
-	type PriorityConfig,
-	priorityConfig,
-} from "../../config/priorities.js";
+import { config } from "../../config/index.js";
+import type { NagConfig, PriorityConfig } from "../../config/types.js";
 
 export const priorityName = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): string => {
 	const p = cfg.priorities[priority];
 	return p ? p.name : "unknown";
@@ -14,7 +11,7 @@ export const priorityName = (
 
 export const priorityDescription = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): string => {
 	const p = cfg.priorities[priority];
 	return p ? p.description : "unknown";
@@ -22,7 +19,7 @@ export const priorityDescription = (
 
 export const priorityUrl = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): string | null => {
 	const p = cfg.priorities[priority];
 	return p?.url ?? null;
@@ -30,7 +27,7 @@ export const priorityUrl = (
 
 export const priorityEmoji = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): string => {
 	const p = cfg.priorities[priority];
 	return p ? p.emoji : "grey_question";
@@ -38,7 +35,7 @@ export const priorityEmoji = (
 
 export const priorityNags = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): NagConfig | undefined => {
 	const p = cfg.priorities[priority];
 	return p ? p.nag : undefined;
@@ -46,14 +43,14 @@ export const priorityNags = (
 
 export const isHighPriority = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): boolean => {
 	return !cfg.defaultLow || priority < cfg.defaultLow;
 };
 
 export const isReviewRequiredForPriority = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): boolean => {
 	const p = cfg.priorities[priority];
 	return p ? p.reviewRequired === true : false;
@@ -61,7 +58,7 @@ export const isReviewRequiredForPriority = (
 
 export const isReportRequiredForPriority = (
 	priority: number,
-	cfg = priorityConfig,
+	cfg = config.priorities,
 ): boolean => {
 	const p = cfg.priorities[priority];
 	return p ? p.reportRequired === true : false;
@@ -70,5 +67,5 @@ export const isReportRequiredForPriority = (
 export const isValidPriority = (
 	input: string | number,
 ): input is keyof PriorityConfig["priorities"] => {
-	return input.toString() in priorityConfig.priorities;
+	return input.toString() in config.priorities.priorities;
 };
