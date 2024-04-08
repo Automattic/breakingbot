@@ -1,9 +1,25 @@
 #!/bin/sh
+set -e
 
-git clone git@github.com:Automattic/breakingbot-deployments.git
+echo "-----> Install app config"
 
+if [ -z "$APP_ENV" ]; then
+    echo "       Did you forget to set APP_ENV?"
+    exit 1
+fi
+
+# Clone the deployment configs
+git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
+
+if [ $? -ne 0 ]; then
+    echo "Clone failed, exiting script."
+    exit 1
+fi
+
+# Remove all existing configs except the gifs
 find ./config -mindepth 1 ! -name 'gifs.ts' -exec rm -rf {} \;
 
+# Setup index
 cp ./breakingbot-deployments/config/index.ts ./config
 
 # Construct the priorities file path based on the APP_ENV variable
@@ -33,3 +49,5 @@ fi
 cp ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
 
 rm -rf ./breakingbot-deployments
+
+echo "-----> Installed app config ($APP_ENV)"
