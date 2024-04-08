@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-echo "-----> Install app configs"
-
 # Clone the deployment configs
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
 
@@ -17,4 +15,4 @@ cp ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/bounda
 
 rm -rf ./breakingbot-deployments
 
-echo "-----> Installed app config ($APP_ENV)"
+echo "-----> Installed app configs"
