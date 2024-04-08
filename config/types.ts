@@ -17,6 +17,7 @@ export type AppConfig = {
 	runbookRootUrl: string;
 	runbookPointUrl?: string;
 	runbookTriageUrl?: string;
+	skipDbSslCertCheck?: boolean;
 };
 
 export type CommPlatformConfig = SlackConfig;

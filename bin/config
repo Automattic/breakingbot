@@ -1,49 +1,16 @@
 #!/bin/sh
 set -e
 
-echo "-----> Install app config"
-
-if [ -z "$APP_ENV" ]; then
-    echo "       Did you forget to set APP_ENV?"
-    exit 1
-fi
+echo "-----> Install app configs"
 
 # Clone the deployment configs
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git
 
-if [ $? -ne 0 ]; then
-    echo "Clone failed, exiting script."
-    exit 1
-fi
+# Remove all existing configs except the gifs and default priorities configs
+find ./config -mindepth 1 ! -name 'gifs.ts' ! -name 'priorities.ts' -exec rm -rf {} \;
 
-# Remove all existing configs except the gifs
-find ./config -mindepth 1 ! -name 'gifs.ts' -exec rm -rf {} \;
-
-# Setup index
-cp ./breakingbot-deployments/config/index.ts ./config
-
-# Construct the priorities file path based on the APP_ENV variable
-ENV_PRIORITIES_FILE="./breakingbot-deployments/config/$APP_ENV/priorities.ts"
-
-# Check if the environment-specific file exists
-if [ -f "$ENV_PRIORITIES_FILE" ]; then
-    # If the file exists for the selected environment, copy it
-    cp "$ENV_PRIORITIES_FILE" ./config/
-else
-    # If the file does not exist, copy the default file
-    cp ./breakingbot-deployments/config/priorities.ts ./config/
-fi
-
-# Construct the config file path based on the APP_ENV variable
-CONFIG_FILE="./breakingbot-deployments/config/$APP_ENV/config.ts"
-
-# Get the environment-specific config file or error out
-if [ -f "$CONFIG_FILE" ]; then
-    cp "$CONFIG_FILE" ./config/config.ts
-else
-    echo "Error: Config file does not exist for the selected environment ($APP_ENV)."
-    exit 1
-fi
+# Copy over our new configs
+cp -r ./breakingbot-deployments/config/* ./config
 
 # Install the a8c WP.com reporter
 cp ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
