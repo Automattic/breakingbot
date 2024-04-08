@@ -19,7 +19,7 @@ import type {
 	User,
 } from "jira.js/out/version3/models/index.js";
 import type pino from "pino";
-import type { JiraConfig } from "../../../config/index.js";
+import type { JiraConfig } from "../../../config/types.js";
 import type { IncidentState } from "../../core/fsm.js";
 import type { Incident } from "../../data/incident.js";
 import type { LogEntry } from "../../data/log.js";

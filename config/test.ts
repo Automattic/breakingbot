@@ -1,5 +1,5 @@
-import type { AppConfig, SlackConfig } from "./index.js";
 import { priorityConfig } from "./priorities.js";
+import type { AppConfig, SlackConfig } from "./types.js";
 
 const testSlackConfig: SlackConfig = {
 	type: "Slack",

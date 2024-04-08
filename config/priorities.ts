@@ -1,3 +1,5 @@
+import type { PriorityConfig } from "./types.js";
+
 export const priorityConfig: PriorityConfig = {
 	default: 2,
 	defaultLow: 3,
@@ -65,31 +67,3 @@ export const priorityConfig: PriorityConfig = {
 		},
 	},
 } as const;
-
-export type PriorityConfig = {
-	documentationUrl?: string;
-	default: number;
-	defaultLow?: number;
-	priorities: {
-		[key: number]: {
-			name: string;
-			url?: string;
-			emoji: string;
-			description: string;
-			aliases: string[];
-			nag?: NagConfig;
-			reportRequired?: boolean;
-			reviewRequired?: boolean;
-		};
-	};
-};
-
-export type NagConfig = {
-	nagIntervalsSeconds: {
-		noComms: number;
-		noPoint: number;
-		needCommUpdate?: number;
-		needInitialComm: number;
-	};
-	workingHours24hrTimeUtc?: { start: number; end: number };
-};

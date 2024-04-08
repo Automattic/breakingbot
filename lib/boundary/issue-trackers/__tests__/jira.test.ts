@@ -13,7 +13,7 @@ import { Jira } from "../jira.js";
 
 import type { Version2Client, Version3Client } from "jira.js";
 import type { DeepMockProxy } from "vitest-mock-extended";
-import type { JiraConfig } from "../../../../config/index.js";
+import type { JiraConfig } from "../../../../config/types.js";
 import type { UserCache } from "../../../data/user-cache.js";
 import type { BreakingBot } from "../../../types/index.js";
 

@@ -1,5 +1,8 @@
-import type { AppConfig, CommPlatformConfig } from "../../config/index.js";
-import type { PriorityConfig } from "../../config/priorities.js";
+import type {
+	AppConfig,
+	CommPlatformConfig,
+	PriorityConfig,
+} from "../../config/types.js";
 import type { DatetimeIso9075 } from "../core/date.js";
 import type { Blocker } from "../data/blocker.js";
 import type { Incident, IncidentOverview } from "../data/incident.js";
