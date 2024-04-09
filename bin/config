@@ -6,7 +6,7 @@ echo "-----> Installing a8c-configs"
 # Clone the a8c app configs
 git clone --depth 1 git@github.com:Automattic/breakingbot-deployments.git > /dev/null 2>&1
 
-echo "       Fetched configs from remote"
+echo "Fetched configs from remote"
 
 # Copy over our new app configs
 cp -rf ./breakingbot-deployments/config/* ./config
@@ -16,4 +16,4 @@ cp -f ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/bou
 
 rm -rf ./breakingbot-deployments
 
-echo "       Merged configs into base"
+echo "Merged configs into base"
