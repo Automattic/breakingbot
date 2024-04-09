@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "-----> Install a8c-config-ssh-key"
+echo "-----> Installing a8c-config-ssh-key"
 
 if [ -z "$A8C_CONFIG_SSH_KEY" ]; then
     echo "       Did you forget to set A8C_CONFIG_SSH_KEY?"
@@ -21,4 +21,3 @@ echo "   LogLevel ERROR" >> ~/.ssh/config
 ssh-keyscan -H github.com >> ~/.ssh/known_hosts 2> /dev/null
 echo "$A8C_CONFIG_SSH_KEY" > ~/.ssh/id_ed25519
 chmod 600 ~/.ssh/id_ed25519
-echo "-----> Installed SSH key from A8C_CONFIG_SSH_KEY"

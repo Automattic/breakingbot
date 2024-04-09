@@ -13,5 +13,3 @@ cp -rf ./breakingbot-deployments/config/* ./config
 cp -f ./breakingbot-deployments/lib/boundary/report-platforms/wpcom.ts ./lib/boundary/report-platforms/wpcom.ts
 
 rm -rf ./breakingbot-deployments
-
-echo "-----> Installed app configs"
