@@ -33,7 +33,7 @@
 		"jira.js": "3.0.5"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.6.4",
+		"@biomejs/biome": "1.7.0",
 		"@types/luxon": "^3.4.2",
 		"@types/pg": "^8.11.5",
 		"rimraf": "^5.0.5",
