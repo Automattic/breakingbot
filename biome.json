@@ -6,6 +6,7 @@
 			"all": true,
 			"complexity": {
 				"all": true,
+				"noUselessTernary": "off",
 				"useSimplifiedLogicExpression": "off"
 			},
 			"style": {
