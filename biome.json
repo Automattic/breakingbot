@@ -11,6 +11,7 @@
 			},
 			"style": {
 				"all": true,
+				"noNamespaceImport": "off",
 				"useFilenamingConvention": {
 					"level": "error",
 					"options": { "filenameCases": ["kebab-case"] }
