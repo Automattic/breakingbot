@@ -35,7 +35,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.6.4",
 		"@types/luxon": "^3.4.2",
-		"@types/pg": "^8.11.4",
+		"@types/pg": "^8.11.5",
 		"rimraf": "^5.0.5",
 		"tsc-watch": "^6.2.0",
 		"typescript": "^5.4.5",
