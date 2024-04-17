@@ -707,7 +707,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.catchAll(({ message }) => {
-		if (!message.room || !message.user || !message.user.id) {
+		if (true) {
 			return;
 		}
 
