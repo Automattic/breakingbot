@@ -707,6 +707,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.catchAll(({ message }) => {
+		// biome-ignore lint/correctness/noConstantCondition: hotfix
 		if (true) {
 			return;
 		}
