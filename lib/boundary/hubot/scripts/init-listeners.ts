@@ -707,7 +707,8 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.catchAll(({ message }) => {
-		if (!message.room || !message.user || !message.user.id) {
+		// biome-ignore lint/correctness/noConstantCondition: hotfix
+		if (true) {
 			return;
 		}
 
