@@ -62,7 +62,7 @@
 //   WPVIP
 
 import { isAnyCore4Set } from "../../../core/metrics.js";
-import { blockerAddRegex } from "../../../core/regex.js";
+import { blockerAddRegex, helpRegex } from "../../../core/regex.js";
 import { incidentOverview } from "../../../data/incident.js";
 import {
 	getLogAisDb,
@@ -685,7 +685,7 @@ export default async (robot: BreakingBot) => {
 		},
 	);
 
-	robot.hear(/^.help$/i, { id: "bot.help" }, ({ envelope, message }) => {
+	robot.hear(helpRegex(), { id: "bot.help" }, ({ envelope, message }) => {
 		robot.adapter.sendHelpMessage(envelope.room, robot.config, message.id);
 	});
 
