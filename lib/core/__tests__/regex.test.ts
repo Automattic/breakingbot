@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { blockerAddRegex, helpRegex } from "../regex.js";
+import { blockerAddRegex, commandsRegex, helpRegex } from "../regex.js";
 
 describe("regex.ts", () => {
 	describe("blockerAddRegex", () => {
@@ -69,6 +69,39 @@ describe("regex.ts", () => {
 		});
 	});
 
+	describe("commandsRegex", () => {
+		test('match ".commands" case insensitively', () => {
+			const regex = commandsRegex();
+			const commandLowercase = ".commands";
+			const commandUppercase = ".COMMANDS";
+			const commandMixedCase = ".CoMmaNds";
+
+			expect(regex.test(commandLowercase)).toBe(true);
+			expect(regex.test(commandUppercase)).toBe(true);
+			expect(regex.test(commandMixedCase)).toBe(true);
+		});
+
+		test('should not match strings that do not strictly match ".commands"', () => {
+			const regex = helpRegex();
+			const wrongCommands = [
+				".command",
+				"command",
+				".commandss",
+				"",
+				". commands",
+				" .commands",
+				"some.commands",
+				".commands ",
+				"bcommands",
+				".commands attention",
+			];
+
+			for (const command of wrongCommands) {
+				expect(regex.test(command)).toBe(false);
+			}
+		});
+	});
+
 	describe("helpRegex", () => {
 		test('match ".help" case insensitively', () => {
 			const regex = helpRegex();
@@ -92,7 +125,7 @@ describe("regex.ts", () => {
 				" .help",
 				"some.help",
 				".help ",
-				".Whelp",
+				"Whelp",
 				".help meeee",
 			];
 

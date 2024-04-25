@@ -62,7 +62,11 @@
 //   WPVIP
 
 import { isAnyCore4Set } from "../../../core/metrics.js";
-import { blockerAddRegex, helpRegex } from "../../../core/regex.js";
+import {
+	blockerAddRegex,
+	commandsRegex,
+	helpRegex,
+} from "../../../core/regex.js";
 import { incidentOverview } from "../../../data/incident.js";
 import {
 	getLogAisDb,
@@ -351,7 +355,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^.(mitigate|mitigated)$/,
+		/^\.(mitigate|mitigated)$/,
 		{ id: "incident.mitigate", requireActiveIncident: true },
 		({ envelope: { room }, message }) => {
 			incidentMitigate(robot, room, message.user.id, message.id);
@@ -359,7 +363,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^.(mitigate|mitigated)\b\s(\S.*)?$/,
+		/^\.(mitigate|mitigated)\b\s(\S.*)?$/,
 		{ id: "incident.mitigated:set", requireUpdatableIncident: true },
 		({ envelope: { room }, match, message }) => {
 			incidentSetMitigated(robot, room, match[2], message.user.id, message.id);
@@ -367,7 +371,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^.genesis\s+(\S.*)$/,
+		/^\.genesis\s+(\S.*)$/,
 		{ id: "incident.genesis:set", requireUpdatableIncident: true },
 		({ envelope: { room }, match, message }) => {
 			incidentSetGenesis(robot, room, match[1], message.user.id, message.id);
@@ -375,7 +379,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^.detected\s+(\S.*)$/,
+		/^\.detected\s+(\S.*)$/,
 		{ id: "incident.detected:set", requireUpdatableIncident: true },
 		({ envelope: { room }, match, message }) => {
 			incidentSetDetected(robot, room, match[1], message.user.id, message.id);
@@ -400,7 +404,7 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^.(breakings|breakingchannels)/i,
+		/^\.(breakings|breakingchannels)/i,
 		{ id: "breakingchannels:get" },
 		({ envelope: { room }, message }) => {
 			const incidents = [];
@@ -690,7 +694,7 @@ export default async (robot: BreakingBot) => {
 	});
 
 	robot.hear(
-		/^.commands(?:\s+(.*))?$/i,
+		commandsRegex(),
 		{ id: "bot.commands" },
 		({ envelope: { room }, message }) => {
 			const commands = getHelpCommands(robot);
