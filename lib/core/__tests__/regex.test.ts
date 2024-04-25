@@ -82,7 +82,7 @@ describe("regex.ts", () => {
 		});
 
 		test('should not match strings that do not strictly match ".commands"', () => {
-			const regex = helpRegex();
+			const regex = commandsRegex();
 			const wrongCommands = [
 				".command",
 				"command",
