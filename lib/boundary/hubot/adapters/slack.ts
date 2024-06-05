@@ -1743,11 +1743,12 @@ class PinoLogger implements SlackLogger {
 // biome-ignore lint/style/noDefaultExport: loaded dynamically by hubot
 export default {
 	use(robot: Robot) {
+		const appToken = process.env.SLACK_APP_TOKEN || "";
 		const logger = new PinoLogger(robot.logger);
 
 		return new Slack(
 			robot,
-			new SocketModeClient({ appToken: process.env.SLACK_APP_TOKEN, logger }),
+			new SocketModeClient({ appToken, logger }),
 			new WebClient(process.env.SLACK_BOT_TOKEN, { logger }),
 		);
 	},
