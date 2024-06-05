@@ -30,7 +30,7 @@
 		"sugar-date": "2.0.6"
 	},
 	"optionalDependencies": {
-		"jira.js": "3.0.5"
+		"jira.js": "4.0.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.7.3",
