@@ -21,19 +21,19 @@
 	"dependencies": {
 		"@slack/socket-mode": "1.3.4",
 		"@slack/web-api": "7.0.4",
-		"drizzle-orm": "0.31.0",
+		"drizzle-orm": "0.31.1",
 		"handlebars": "4.7.8",
 		"hubot": "11.1.4",
 		"jssm": "github:mhsdef/jssm#node-ts-esm-yaaay",
 		"luxon": "3.4.4",
-		"pg": "8.11.5",
+		"pg": "8.12.0",
 		"sugar-date": "2.0.6"
 	},
 	"optionalDependencies": {
 		"jira.js": "4.0.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.7.3",
+		"@biomejs/biome": "1.8.0",
 		"@types/luxon": "^3.4.2",
 		"@types/pg": "^8.11.6",
 		"rimraf": "^5.0.7",
