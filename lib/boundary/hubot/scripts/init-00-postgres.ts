@@ -50,11 +50,13 @@ export default async (robot: BreakingBot) => {
 			await client.end();
 			robot.logger.info("Shutdown complete.");
 			process.exit(0);
-		} catch (err: any) {
-			robot.logger.error(
-				`Error during shutdown: ${JSON.stringify(err.message)}`,
-				`Error stack: ${JSON.stringify(err.stack)}`,
-			);
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				robot.logger.error(
+					`Error during shutdown: ${JSON.stringify(err.message)}`,
+					`Error stack: ${JSON.stringify(err.stack)}`,
+				);
+			}
 
 			process.exit(1);
 		}
