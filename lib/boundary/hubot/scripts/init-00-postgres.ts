@@ -38,16 +38,27 @@ export default async (robot: BreakingBot) => {
 
 	robot.db = drizzle(client, { schema });
 
-	const handleExit = async (signal: string) => {
-		robot.logger.info(`Received ${signal}. Shutting down.`);
-		stopAnnoyotron(robot.annoyotron);
+const handleExit = async (signal: string) => {
+	robot.logger.info(`Received ${signal}. Shutting down.`);
+	robot.logger.info(`Process ID: ${process.pid}`);
+
+	try {
+		stopAnnoyotron(robot.annoyotron); 
 		stopArchivist(robot.archivist);
 		stopSyntrax(robot.syntrax);
 		robot.shutdown();
 		await client.end();
 		robot.logger.info("Shutdown complete.");
-		process.exitCode = 0;
-	};
+		process.exit(0);
+	} catch (err: any) {
+		robot.logger.error(
+			`Error during shutdown: ${JSON.stringify(err.message)}`,
+			`Error stack: ${JSON.stringify(err.stack)}`,
+		);
+
+		process.exit(1);
+	}
+};
 
 	process.on("SIGINT", handleExit);
 	process.on("SIGTERM", handleExit);
