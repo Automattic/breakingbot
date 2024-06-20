@@ -2,7 +2,7 @@ version: '3'
 services:
   app:
     container_name: breaking_app
-    image: node:20
+    image: node:22
     environment:
       NODE_ENV: development
       DATABASE_URL: 'postgres://root:hunter2@breaking_db/breakingbot'
