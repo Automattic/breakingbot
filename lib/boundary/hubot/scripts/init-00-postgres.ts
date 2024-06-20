@@ -40,13 +40,26 @@ export default async (robot: BreakingBot) => {
 
 	const handleExit = async (signal: string) => {
 		robot.logger.info(`Received ${signal}. Shutting down.`);
-		stopAnnoyotron(robot.annoyotron);
-		stopArchivist(robot.archivist);
-		stopSyntrax(robot.syntrax);
-		robot.shutdown();
-		await client.end();
-		robot.logger.info("Shutdown complete.");
-		process.exitCode = 0;
+		robot.logger.info(`Process ID: ${process.pid}`);
+
+		try {
+			stopAnnoyotron(robot.annoyotron);
+			stopArchivist(robot.archivist);
+			stopSyntrax(robot.syntrax);
+			robot.shutdown();
+			await client.end();
+			robot.logger.info("Shutdown complete.");
+			process.exit(0);
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				robot.logger.error(
+					`Error during shutdown: ${JSON.stringify(err.message)}`,
+					`Error stack: ${JSON.stringify(err.stack)}`,
+				);
+			}
+
+			process.exit(1);
+		}
 	};
 
 	process.on("SIGINT", handleExit);
