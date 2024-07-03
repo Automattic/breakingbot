@@ -609,6 +609,22 @@ export const incidentSetEngLead = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
+	if (robot.config.breakingAllowMultiRoles === false ) {
+		let tasks = [];
+
+		if (engLead === incident.comms) {
+			tasks.push(robot.adapter.replyToMessage(room, "Sorry you're already on comms!", messageId));
+			tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
+		} else if (engLead === incident.point) {
+			tasks.push(robot.adapter.replyToMessage(room, "Sorry you're already got point!", messageId));
+			tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
+		}
+
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
+ 
 	if (engLead === incident.engLead) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
 	}
