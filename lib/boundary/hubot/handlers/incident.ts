@@ -609,32 +609,12 @@ export const incidentSetEngLead = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
-	if (robot.config.breakingAllowMultiRoles === false) {
-		const tasks = [];
-
-		if (engLead === incident.comms) {
-			tasks.push(
-				robot.adapter.replyToMessage(
-					room,
-					"Sorry you're already on comms!",
-					messageId,
-				),
-			);
-			tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
-		} else if (engLead === incident.point) {
-			tasks.push(
-				robot.adapter.replyToMessage(
-					room,
-					"Sorry you're already got point!",
-					messageId,
-				),
-			);
-			tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
-		}
-
-		if (tasks.length) {
-			return Promise.allSettled(tasks);
-		}
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, engLead)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, engLead, messageId);
+		return Promise.allSettled(tasks);
 	}
 
 	if (engLead === incident.engLead) {
@@ -1413,4 +1393,45 @@ const permalink = async (
 	messageId: string | undefined,
 ) => {
 	return messageId ? await adapter.getPermalink(room, messageId) : undefined;
+};
+
+export const isUserAlreadyInRole = (incident: Incident, user: string) => {
+	return [incident.comms, incident.point, incident.engLead].includes(user);
+};
+
+export const getUserAlreadyInRoleErrorMsg = (
+	robot: BreakingBot,
+	room: string,
+	user: string,
+	messageId?: string,
+) => {
+	let currentRole = null;
+	const incident = robot.incidents[room].data();
+	const roles = {
+		comms: incident.comms,
+		point: incident.point,
+		engLead: incident.engLead,
+	};
+
+	for (const [role, roleUser] of Object.entries(roles)) {
+		if (user === roleUser) {
+			currentRole = role;
+			break;
+		}
+	}
+
+	if (currentRole) {
+		const tasks = [];
+		tasks.push(
+			robot.adapter.replyToMessage(
+				room,
+				`Sorry, you're already assigned to ${currentRole}!`,
+				messageId,
+			),
+		);
+		tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
+		return tasks;
+	}
+
+	return [];
 };
