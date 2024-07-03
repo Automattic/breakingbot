@@ -614,7 +614,9 @@ export const incidentSetEngLead = async (
 		isUserAlreadyInRole(incident, engLead)
 	) {
 		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, engLead, messageId);
-		return Promise.allSettled(tasks);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
 	}
 
 	if (engLead === incident.engLead) {
