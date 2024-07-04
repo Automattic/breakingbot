@@ -779,6 +779,51 @@ describe("incident.ts", () => {
 			expect(robot.db.insert).toHaveBeenCalledTimes(0);
 			expect(robot.incidents[TEST_ROOM].data().engLead).toBeNull();
 		});
+
+		test("fails multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = false;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					point: "john",
+					comms: "sue",
+					triage: "tom",
+					engLead: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "john");
+			mockFluentDbUpdateOnce(robot, [{ engLead: "john" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetEngLead(robot, TEST_ROOM, "john", "john");
+			expect(robot.incidents[TEST_ROOM].data().engLead).toBeNull();
+		});
+
+		test("success with multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = true;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					point: "john",
+					comms: "sue",
+					triage: "tom",
+					engLead: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "john");
+			mockFluentDbUpdateOnce(robot, [{ engLead: "john" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetEngLead(robot, TEST_ROOM, "john", "john");
+			expect(robot.incidents[TEST_ROOM].data().engLead).not.toBeNull();
+			expect(robot.incidents[TEST_ROOM].data().engLead).toBe("john");
+		});
+		
+
 	});
 
 	describe("incidentSetSummary", () => {
