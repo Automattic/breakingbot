@@ -460,6 +460,16 @@ export const incidentSetPoint = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, point)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, point, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
+
 	if (point === incident.point) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
 	}
@@ -511,6 +521,21 @@ export const incidentSetComms = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
+	console.log(">>>>> 1");
+
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, comms)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, comms, messageId);
+		if (tasks.length) {
+			console.log(">>>>> 2");
+			return Promise.allSettled(tasks);
+		}
+	}
+
+	console.log(">>>>> 3");
+
 	if (comms === incident.comms) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
 	}
@@ -561,6 +586,16 @@ export const incidentSetTriage = async (
 	messageId?: string,
 ) => {
 	const incident = robot.incidents[room].data();
+
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, triage)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, triage, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
 
 	if (triage === incident.triage) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
@@ -1398,7 +1433,12 @@ const permalink = async (
 };
 
 export const isUserAlreadyInRole = (incident: Incident, user: string) => {
-	return [incident.comms, incident.point, incident.engLead].includes(user);
+	return [
+		incident.comms,
+		incident.point,
+		incident.engLead,
+		incident.triage,
+	].includes(user);
 };
 
 export const getUserAlreadyInRoleErrorMsg = (
@@ -1413,6 +1453,7 @@ export const getUserAlreadyInRoleErrorMsg = (
 		comms: incident.comms,
 		point: incident.point,
 		engLead: incident.engLead,
+		triage: incident.triage,
 	};
 
 	for (const [role, roleUser] of Object.entries(roles)) {

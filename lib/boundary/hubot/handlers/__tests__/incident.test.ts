@@ -580,6 +580,56 @@ describe("incident.ts", () => {
 			expect(robot.incidents[TEST_ROOM].data().point).toBeNull();
 			expect(robot.incidents[TEST_ROOM].data().acknowledgedAt).toBeNull();
 		});
+
+		test("fails multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = false;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					comms: "adele",
+					point: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "adele");
+			mockFluentDbUpdateOnce(robot, [{ point: "adele" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetPoint(robot, TEST_ROOM, "adele", "adele");
+			expect(robot.incidents[TEST_ROOM].data().point).toBeNull();
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledTimes(1);
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"Sorry, you're already assigned to comms!",
+				undefined,
+			);
+			expect(robot.adapter.reactToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"no_entry",
+				undefined,
+			);
+		});
+
+		test("success with multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = true;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					comms: "adele",
+					point: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "adele");
+			mockFluentDbUpdateOnce(robot, [{ point: "adele" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetPoint(robot, TEST_ROOM, "adele", "adele");
+			expect(robot.incidents[TEST_ROOM].data().point).not.toBeNull();
+			expect(robot.incidents[TEST_ROOM].data().point).toBe("adele");
+		});
 	});
 
 	describe("incidentSetComms", () => {
@@ -665,6 +715,56 @@ describe("incident.ts", () => {
 			expect(robot.incidents[TEST_ROOM].data().comms).toBeNull();
 			expect(robot.incidents[TEST_ROOM].data().acknowledgedAt).toBeNull();
 		});
+
+		test("fails multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = false;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					triage: "adele",
+					comms: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "adele");
+			mockFluentDbUpdateOnce(robot, [{ comms: "adele" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetComms(robot, TEST_ROOM, "adele", "adele");
+			expect(robot.incidents[TEST_ROOM].data().comms).toBeNull();
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledTimes(1);
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"Sorry, you're already assigned to triage!",
+				undefined,
+			);
+			expect(robot.adapter.reactToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"no_entry",
+				undefined,
+			);
+		});
+
+		test("success with multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = true;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					point: "adele",
+					comms: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "adele");
+			mockFluentDbUpdateOnce(robot, [{ comms: "adele" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetComms(robot, TEST_ROOM, "adele", "adele");
+			expect(robot.incidents[TEST_ROOM].data().comms).not.toBeNull();
+			expect(robot.incidents[TEST_ROOM].data().comms).toBe("adele");
+		});
 	});
 
 	describe("incidentSetTriage", () => {
@@ -721,6 +821,56 @@ describe("incident.ts", () => {
 			expect(robot.db.update).toHaveBeenCalledTimes(1);
 			expect(robot.db.insert).toHaveBeenCalledTimes(0);
 			expect(robot.incidents[TEST_ROOM].data().triage).toBeNull();
+		});
+
+		test("fails multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = false;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					engLead: "stani",
+					triage: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "stani");
+			mockFluentDbUpdateOnce(robot, [{ triage: "stani" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetTriage(robot, TEST_ROOM, "stani", "stani");
+			expect(robot.incidents[TEST_ROOM].data().triage).toBeNull();
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledTimes(1);
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"Sorry, you're already assigned to engLead!",
+				undefined,
+			);
+			expect(robot.adapter.reactToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"no_entry",
+				undefined,
+			);
+		});
+
+		test("success with multi-role assignment", async () => {
+			robot.config.breakingAllowMultiRoles = true;
+
+			// @ts-expect-error
+			robot.incidents[TEST_ROOM] = newIncidentMachine(
+				createIncident({
+					engLead: "stani",
+					triage: null,
+				}),
+			);
+
+			setUserCacheEntry(robot.users, "stani");
+			mockFluentDbUpdateOnce(robot, [{ triage: "stani" }]);
+			mockFluentDbInsertOnce(robot, []);
+
+			await incidentSetTriage(robot, TEST_ROOM, "stani", "stani");
+			expect(robot.incidents[TEST_ROOM].data().triage).not.toBeNull();
+			expect(robot.incidents[TEST_ROOM].data().triage).toBe("stani");
 		});
 	});
 
@@ -786,19 +936,28 @@ describe("incident.ts", () => {
 			// @ts-expect-error
 			robot.incidents[TEST_ROOM] = newIncidentMachine(
 				createIncident({
-					point: "john",
-					comms: "sue",
-					triage: "tom",
+					point: "luke",
 					engLead: null,
 				}),
 			);
 
-			setUserCacheEntry(robot.users, "john");
-			mockFluentDbUpdateOnce(robot, [{ engLead: "john" }]);
+			setUserCacheEntry(robot.users, "luke");
+			mockFluentDbUpdateOnce(robot, [{ engLead: "luke" }]);
 			mockFluentDbInsertOnce(robot, []);
 
-			await incidentSetEngLead(robot, TEST_ROOM, "john", "john");
+			await incidentSetEngLead(robot, TEST_ROOM, "luke", "luke");
 			expect(robot.incidents[TEST_ROOM].data().engLead).toBeNull();
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledTimes(1);
+			expect(robot.adapter.replyToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"Sorry, you're already assigned to point!",
+				undefined,
+			);
+			expect(robot.adapter.reactToMessage).toHaveBeenCalledWith(
+				TEST_ROOM,
+				"no_entry",
+				undefined,
+			);
 		});
 
 		test("success with multi-role assignment", async () => {
@@ -807,23 +966,19 @@ describe("incident.ts", () => {
 			// @ts-expect-error
 			robot.incidents[TEST_ROOM] = newIncidentMachine(
 				createIncident({
-					point: "john",
-					comms: "sue",
-					triage: "tom",
+					point: "luke",
 					engLead: null,
 				}),
 			);
 
-			setUserCacheEntry(robot.users, "john");
-			mockFluentDbUpdateOnce(robot, [{ engLead: "john" }]);
+			setUserCacheEntry(robot.users, "luke");
+			mockFluentDbUpdateOnce(robot, [{ engLead: "luke" }]);
 			mockFluentDbInsertOnce(robot, []);
 
-			await incidentSetEngLead(robot, TEST_ROOM, "john", "john");
+			await incidentSetEngLead(robot, TEST_ROOM, "luke", "luke");
 			expect(robot.incidents[TEST_ROOM].data().engLead).not.toBeNull();
-			expect(robot.incidents[TEST_ROOM].data().engLead).toBe("john");
+			expect(robot.incidents[TEST_ROOM].data().engLead).toBe("luke");
 		});
-		
-
 	});
 
 	describe("incidentSetSummary", () => {

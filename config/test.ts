@@ -12,6 +12,7 @@ export const testConfig: AppConfig = {
 	breakingMainRoom: "unit-test-breaking-main",
 	breakingNotifyRoom: "unit-test-breaking-notify",
 	breakingRoomPrefix: "unit-test-breaking-",
+	breakingAllowMultiRoles: true,
 	commPlatform: testSlackConfig,
 	priorities: priorityConfig,
 	runbookRootUrl: "https://automattic.com",
