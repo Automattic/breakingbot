@@ -521,20 +521,15 @@ export const incidentSetComms = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
-	console.log(">>>>> 1");
-
 	if (
 		robot.config.breakingAllowMultiRoles === false &&
 		isUserAlreadyInRole(incident, comms)
 	) {
 		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, comms, messageId);
 		if (tasks.length) {
-			console.log(">>>>> 2");
 			return Promise.allSettled(tasks);
 		}
 	}
-
-	console.log(">>>>> 3");
 
 	if (comms === incident.comms) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
