@@ -713,10 +713,10 @@ export default async (robot: BreakingBot) => {
 	// aliased commands
 	const { priorities } = robot.config.priorities;
 
-	Object.entries(priorities).forEach(([key, value]) => {
-		value.aliases.forEach(command => {
+	for (const [key, value] of Object.entries(priorities)) {
+		for (const command of value.aliases) {
 			robot.hear(
-				new RegExp(`^\\.${command}\\s+(.+)$`, 'i'),
+				new RegExp(`^\\.${command}\\s+(.+)$`, "i"),
 				{ id: `incident.start:${command}` },
 				({ envelope: { room }, match, message }) => {
 					const { breakingMainRoom } = robot.config;
@@ -732,8 +732,8 @@ export default async (robot: BreakingBot) => {
 					incidentStart(robot, match[1], message.user.id, Number(key));
 				},
 			);
-		});
-	});
+		}
+	}
 
 	robot.catchAll(({ message }) => {
 		// biome-ignore lint/correctness/noConstantCondition: hotfix
