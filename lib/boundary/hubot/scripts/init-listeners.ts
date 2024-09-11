@@ -710,6 +710,31 @@ export default async (robot: BreakingBot) => {
 		},
 	);
 
+	// aliased commands
+	const { priorities } = robot.config.priorities;
+
+	Object.entries(priorities).forEach(([key, value]) => {
+		value.aliases.forEach(command => {
+			robot.hear(
+				new RegExp(`^\\.${command}\\s+(.+)$`, 'i'),
+				{ id: `incident.start:${command}` },
+				({ envelope: { room }, match, message }) => {
+					const { breakingMainRoom } = robot.config;
+
+					if (room !== breakingMainRoom) {
+						return robot.adapter.sendError(
+							room,
+							`\`.${command}\` me up over in ${robot.adapter.fmtRoom(breakingMainRoom)}`,
+							message.id,
+						);
+					}
+
+					incidentStart(robot, match[1], message.user.id, Number(key));
+				},
+			);
+		});
+	});
+
 	robot.catchAll(({ message }) => {
 		// biome-ignore lint/correctness/noConstantCondition: hotfix
 		if (true) {
