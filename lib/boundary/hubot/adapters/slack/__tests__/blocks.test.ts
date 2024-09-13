@@ -224,7 +224,7 @@ describe("slack/blocks.ts", () => {
 			{
 				text: {
 					emoji: true,
-					text: ":fire: P2 [default]",
+					text: ":fire: P2",
 					type: "plain_text",
 				},
 				type: "header",
@@ -236,7 +236,7 @@ describe("slack/blocks.ts", () => {
 			{
 				text: {
 					emoji: true,
-					text: ":dash: P3",
+					text: ":dash: P3 [default]",
 					type: "plain_text",
 				},
 				type: "header",
