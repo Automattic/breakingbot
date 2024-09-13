@@ -6,7 +6,6 @@
 //
 // Commands:
 //   `.start <incident title>` - Starts a new incident, notifies widely, gets a new channel assigned
-//   `.low <incident title>` - Starts a new low priority incident, gets a new channel assigned
 //   `.mitigated|mitigate [<when>]` - Marks that the incident has been mitigated (Related Core 4 metrics). <when> is optional, and parsed from natural language. If omitted, uses now.
 //   `.stop|allclear|resolve` - Marks an ongoing incident as resolved
 //   `.restart` - Marks an ongoing incident both unmitigated and unresolved. Indicates that a previous .mitigated and/or .allclear call was premature and the outage persists.

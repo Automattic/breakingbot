@@ -44,9 +44,16 @@ export const priorityNags = (
 export const isHighPriority = (
 	priority: number,
 	cfg = config.priorities,
-): boolean => {
-	return !cfg.defaultLow || priority < cfg.defaultLow;
-};
+  ): boolean => {
+	const priorityConfig = cfg.priorities[priority];
+	
+	// Check if isHighPriority exists and is set to true
+	if (priorityConfig && priorityConfig.isHighPriority === true) {
+	  return true;
+	}
+	
+	return false;
+  };
 
 export const isReviewRequiredForPriority = (
 	priority: number,
