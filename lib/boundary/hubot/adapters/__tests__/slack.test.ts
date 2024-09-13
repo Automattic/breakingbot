@@ -110,8 +110,7 @@ describe("slack.ts", () => {
 				expect.objectContaining({
 					blocks: newBreakingBlocks(
 						incident.title,
-						incident.chatRoomUid || "",
-						incident.createdBy,
+						incident.chatRoomUid || ""
 					),
 					channel: "C3984354",
 					text: ":fire: <#unit-test-breaking-42>: *TESTING 123* started by <@hanni>",

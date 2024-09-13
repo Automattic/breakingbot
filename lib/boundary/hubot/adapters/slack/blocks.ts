@@ -178,15 +178,12 @@ export const mrkdownList = (
 
 export const newBreakingBlocks = (
 	title: string,
-	channel: string,
-	createdBy: string,
+	desc: string
 ) => {
 	return [
 		divider(),
-		headerBlock(title.toUpperCase()),
-		mrkdownBlock(
-			`:${hiPriority()}: :${siren()}: <#${channel}> <!channel> started by <@${createdBy}>`,
-		),
+		mrkdownBlock(title),
+		mrkdownBlock(desc),
 		divider(),
 	];
 };
@@ -214,8 +211,10 @@ export const introNewIncidentBlocks = (
 	config: AppConfig,
 	formattedTrackerUid?: string,
 ) => {
+
+	const mrkDown = `<#${chatRoomUid}> <!channel> started by <@${createdBy}>`;
 	const blocks = isHighPriority(priority)
-		? newBreakingBlocks(title, chatRoomUid, createdBy)
+		? newBreakingBlocks(title, mrkDown)
 		: newLowBreakingBlocks(title, chatRoomUid, createdBy);
 
 	if (formattedTrackerUid) {

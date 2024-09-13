@@ -60,6 +60,7 @@ import {
 	incidentCanceled,
 	rip,
 	siren,
+	hiPriority,
 	sob,
 } from "./slack/emoji.js";
 import {
@@ -157,11 +158,24 @@ export class Slack extends Adapter implements CommPlatform {
 			return this.#failFast("notifyNewIncident: Missing chat room!");
 		}
 
-		const blocks = newBreakingBlocks(title, chatRoomUid, createdBy);
+		console.log('>>> High');
+		
+
 		const emoji = priorityEmoji(priority);
+		
 		const fmtRoom = this.fmtRoom(chatRoomUid);
 		const fmtUser = this.fmtUser(createdBy);
 		const text = `:${emoji}: ${fmtRoom}: *${title.toUpperCase()}* started by ${fmtUser}`;
+		const desc = `${fmtRoom} <!channel> started by ${fmtUser}`;
+		const header = `:${hiPriority()}: :${emoji}: *Breaking Incident Started:*\n\n${title}`;
+
+		const blocks = newBreakingBlocks(header, desc);
+
+
+
+		console.log(emoji);
+		console.log(blocks);
+		console.log(text);
 
 		const tasks = [this.#sendToChannel(mainChannel, blocks, text)];
 
@@ -179,6 +193,8 @@ export class Slack extends Adapter implements CommPlatform {
 		if (!chatRoomUid) {
 			return this.#failFast("notifyNewIncident: Missing chat room!");
 		}
+
+		console.log('>>>> Low');
 
 		const emoji = priorityEmoji(priority);
 		const fmtRoom = this.fmtRoom(chatRoomUid);
@@ -206,7 +222,7 @@ export class Slack extends Adapter implements CommPlatform {
 
 		return this.#sendToChannel(
 			chatRoomUid,
-			introNewIncidentBlocks(
+			introNewIncidentBlocks( 
 				chatRoomUid,
 				createdBy,
 				priority,

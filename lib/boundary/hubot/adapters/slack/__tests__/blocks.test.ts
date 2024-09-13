@@ -203,7 +203,7 @@ describe("slack/blocks.ts", () => {
 			{ type: "divider" },
 		];
 
-		const result = newBreakingBlocks("BREAKING NEWS", "C12345", "U12345");
+		const result = newBreakingBlocks("BREAKING NEWS", "C12345");
 		expect(result).toEqual(expectedOutput);
 	});
 
