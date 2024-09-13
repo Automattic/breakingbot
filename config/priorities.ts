@@ -19,7 +19,7 @@ export const priorityConfig: PriorityConfig = {
 			},
 			reportRequired: true,
 			reviewRequired: true,
-			isHighPriority: true, 
+			isHighPriority: true,
 		},
 		2: {
 			name: "P2",
