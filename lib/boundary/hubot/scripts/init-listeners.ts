@@ -140,24 +140,6 @@ export default async (robot: BreakingBot) => {
 	);
 
 	robot.hear(
-		/^\.low\b\s+(\S.*)$/i,
-		{ id: "incident.start:low" },
-		({ envelope: { room }, match, message }) => {
-			const { breakingMainRoom, priorities } = robot.config;
-
-			if (room !== breakingMainRoom) {
-				return robot.adapter.sendError(
-					room,
-					`\`.start\` me up over in ${robot.adapter.fmtRoom(breakingMainRoom)}`,
-					message.id,
-				);
-			}
-
-			incidentStart(robot, match[1], message.user.id, priorities.defaultLow);
-		},
-	);
-
-	robot.hear(
 		/^\.(stop|allclear|clear|resolve|resolved)$/i,
 		{
 			id: "incident.resolve",
