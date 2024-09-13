@@ -1,19 +1,13 @@
 import { describe, expect, test } from "vitest";
 import { mockDeep } from "vitest-mock-extended";
-import { config } from "../../../../../../config/index.js";
 import {
 	createBlocker,
 	createIncident,
 	createLogEntry,
 } from "../../../../../../test/index.js";
-import { isHighPriority, priorityEmoji } from "../../../../../core/priority.js";
+import { priorityEmoji } from "../../../../../core/priority.js";
 import type { IssueTracker } from "../../../../issue-tracker.js";
-import {
-	blocked,
-	hiPriority,
-	incidentInactive,
-	lowPriority,
-} from "../emoji.js";
+import { blocked, hiPriority, incidentInactive } from "../emoji.js";
 import {
 	decodeHtmlEntities,
 	encodeHtmlEntities,
@@ -56,7 +50,8 @@ describe("slack/string.ts", () => {
 			});
 
 			const topic = fmtIncidentTopic(inactiveIncident);
-			const expectedTopic = `:heavy_multiplication_x: [P5] *TEST INCIDENT LOW PRIORITY* - Point: _nobody_, Comms: _nobody_`;
+			const expectedTopic =
+				":heavy_multiplication_x: [P5] *TEST INCIDENT LOW PRIORITY* - Point: _nobody_, Comms: _nobody_";
 
 			expect(topic).toEqual(expectedTopic);
 		});
