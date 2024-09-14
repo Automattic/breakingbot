@@ -39,7 +39,6 @@ import {
 	mitigatedBlocks,
 	mrkdownBlock,
 	newBreakingBlocks,
-	upgradePriorityBlocks,
 	notesBlocks,
 	priorityBlocks,
 	resolvedBlocks,
@@ -48,6 +47,7 @@ import {
 	statusBlocks,
 	summaryBlocks,
 	summaryBodyBlock,
+	upgradePriorityBlocks,
 } from "./slack/blocks.js";
 import {
 	affected as affectedEmoji,
@@ -179,10 +179,17 @@ export class Slack extends Adapter implements CommPlatform {
 		notifyChannel?: string,
 	) {
 		if (!chatRoomUid) {
-			return this.#failFast("notifyIncidentPriorityUpgrade: Missing chat room!");
+			return this.#failFast(
+				"notifyIncidentPriorityUpgrade: Missing chat room!",
+			);
 		}
 
-		const blocks = upgradePriorityBlocks(title, priority, chatRoomUid, createdBy);
+		const blocks = upgradePriorityBlocks(
+			title,
+			priority,
+			chatRoomUid,
+			createdBy,
+		);
 		const emoji = priorityEmoji(priority);
 		const fmtRoom = this.fmtRoom(chatRoomUid);
 		const fmtUser = this.fmtUser(createdBy);
@@ -191,7 +198,7 @@ export class Slack extends Adapter implements CommPlatform {
 
 		if (notifyChannel) {
 			tasks.push(this.#sendToChannel(notifyChannel, blocks, text));
-		} 
+		}
 
 		return Promise.allSettled(tasks);
 	}

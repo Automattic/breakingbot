@@ -13,8 +13,8 @@ import {
 	helpBlocks,
 	mrkdownBlock,
 	newBreakingBlocks,
-	upgradePriorityBlocks,
 	priorityBlocks,
+	upgradePriorityBlocks,
 } from "../slack/blocks.js";
 import { allClear, fiery, incidentCanceled } from "../slack/emoji.js";
 
