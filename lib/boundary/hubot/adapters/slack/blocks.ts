@@ -191,6 +191,21 @@ export const newBreakingBlocks = (
 	];
 };
 
+export const upgradePriorityBlocks = (
+	title: string,
+	priority: number,
+	channel: string,
+	createdBy: string,
+) => {
+	return [
+		headerBlock(`[P${priority}] Breaking Incident Upgraded!`),
+		mrkdownBlock(
+			`:${hiPriority()}: *${title}*: has been upgraded to *P${priority}*!\n\nupgraded by <@${createdBy}> in <#${channel}> <!channel>`,
+		),
+		divider(),
+	];
+};
+
 export const newLowBreakingBlocks = (
 	title: string,
 	channel: string,

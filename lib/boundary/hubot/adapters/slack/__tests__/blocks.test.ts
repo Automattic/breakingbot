@@ -16,6 +16,7 @@ import {
 	notesBlocks,
 	priorityBlocks,
 	richTextBlock,
+	upgradePriorityBlocks,
 } from "../blocks.js";
 
 describe("slack/blocks.ts", () => {
@@ -207,6 +208,35 @@ describe("slack/blocks.ts", () => {
 		expect(result).toEqual(expectedOutput);
 	});
 
+	test("upgradePriorityBlocks", () => {
+		const expectedOutput = [
+			{
+				type: "header",
+				text: {
+					type: "plain_text",
+					text: "[P2] Breaking Incident Upgraded!",
+					emoji: true,
+				},
+			},
+			{
+				type: "section",
+				text: {
+					type: "mrkdwn",
+					text: ":fire: *Breaking News*: has been upgraded to *P2*!\n\nupgraded by <@U12345> in <#C12345> <!channel>",
+				},
+			},
+			{ type: "divider" },
+		];
+
+		const result = upgradePriorityBlocks(
+			"Breaking News",
+			2,
+			"C12345",
+			"U12345",
+		);
+		expect(result).toEqual(expectedOutput);
+	});
+
 	test("priorityBlocks", () => {
 		expect(priorityBlocks(config.priorities)).toStrictEqual([
 			{
@@ -224,7 +254,7 @@ describe("slack/blocks.ts", () => {
 			{
 				text: {
 					emoji: true,
-					text: ":fire: P2 [default]",
+					text: ":fire: P2",
 					type: "plain_text",
 				},
 				type: "header",
@@ -236,7 +266,7 @@ describe("slack/blocks.ts", () => {
 			{
 				text: {
 					emoji: true,
-					text: ":dash: P3",
+					text: ":dash: P3 [default]",
 					type: "plain_text",
 				},
 				type: "header",

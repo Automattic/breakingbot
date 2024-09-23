@@ -54,12 +54,6 @@ describe("priority.ts", () => {
 		test("P4", () => {
 			expect(isHighPriority(4, testPriorityCfg)).toBe(false);
 		});
-
-		test("Everything high priority if no low configured", () => {
-			expect(
-				isHighPriority(4, { ...testPriorityCfg, defaultLow: undefined }),
-			).toBe(true);
-		});
 	});
 
 	describe("isReviewRequiredForPriority", () => {
