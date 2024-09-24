@@ -135,6 +135,7 @@ export type PriorityConfig = {
 			nag?: NagConfig;
 			reportRequired?: boolean;
 			reviewRequired?: boolean;
+			isHighPriority?: boolean;
 		};
 	};
 };
