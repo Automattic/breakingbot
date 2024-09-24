@@ -14,6 +14,7 @@ import {
 	mrkdownBlock,
 	newBreakingBlocks,
 	priorityBlocks,
+	upgradePriorityBlocks,
 } from "../slack/blocks.js";
 import { allClear, fiery, incidentCanceled } from "../slack/emoji.js";
 
@@ -115,6 +116,34 @@ describe("slack.ts", () => {
 					),
 					channel: "C3984354",
 					text: ":fire: <#unit-test-breaking-42>: *TESTING 123* started by <@hanni>",
+				}),
+			);
+		});
+
+		test("fails fast if no chatRoomUid", () => {
+			const incident = createIncident({ chatRoomUid: null });
+			expectProcessExit(async () =>
+				slack.notifyNewIncident(incident, "C3984354"),
+			);
+		});
+	});
+
+	describe("notifyIncidentPriorityUpgrade", () => {
+		test("success", async () => {
+			const incident = createIncident();
+
+			await slack.notifyIncidentPriorityUpgrade(incident, "C3984354");
+
+			expect(webClient.chat.postMessage).toHaveBeenCalledWith(
+				expect.objectContaining({
+					blocks: upgradePriorityBlocks(
+						incident.title,
+						2,
+						incident.chatRoomUid || "",
+						incident.createdBy,
+					),
+					channel: "C3984354",
+					text: "[P2]:fire: *Testing 123* upgraded by <@hanni> in <#unit-test-breaking-42>",
 				}),
 			);
 		});
