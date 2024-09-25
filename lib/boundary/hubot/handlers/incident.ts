@@ -1079,7 +1079,6 @@ export const incidentSetPriority = async (
 		return robot.adapter.sendError(room, "Failed to set priority!", messageId);
 	}
 
-	const oldPriority: number = incident.priority;
 	incident.priority = priority;
 
 	const url = await permalink(robot.adapter, room, messageId);
@@ -1094,16 +1093,6 @@ export const incidentSetPriority = async (
 			url,
 		),
 	];
-
-	if (isHighPriority(priority) && oldPriority > priority) {
-		tasks.push(
-			robot.adapter.notifyIncidentPriorityUpgrade(
-				incident,
-				config.breakingMainRoom,
-				config.breakingNotifyRoom,
-			),
-		);
-	}
 
 	return Promise.allSettled(tasks);
 };

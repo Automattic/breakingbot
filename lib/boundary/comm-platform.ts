@@ -19,11 +19,6 @@ export interface CommPlatform {
 		mainRoom: string,
 		notifyRoom?: string,
 	): Promise<unknown>;
-	notifyIncidentPriorityUpgrade(
-		incident: Incident,
-		mainRoom: string,
-		notifyRoom?: string,
-	): Promise<unknown>;
 	notifyNewLowIncident(incident: Incident, mainRoom: string): Promise<unknown>;
 	introNewIncident(
 		incident: Incident,
