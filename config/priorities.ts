@@ -1,7 +1,7 @@
 import type { PriorityConfig } from "./types.js";
 
 export const priorityConfig: PriorityConfig = {
-	default: 3,
+	default: 2,
 	priorities: {
 		1: {
 			name: "P1",
