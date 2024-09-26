@@ -6,7 +6,6 @@
 //
 // Commands:
 //   `.start <incident title>` - Starts a new incident, notifies widely, gets a new channel assigned
-//   `.low <incident title>` - Starts a new low priority incident, gets a new channel assigned
 //   `.mitigated|mitigate [<when>]` - Marks that the incident has been mitigated (Related Core 4 metrics). <when> is optional, and parsed from natural language. If omitted, uses now.
 //   `.stop|allclear|resolve` - Marks an ongoing incident as resolved
 //   `.restart` - Marks an ongoing incident both unmitigated and unresolved. Indicates that a previous .mitigated and/or .allclear call was premature and the outage persists.
@@ -136,24 +135,6 @@ export default async (robot: BreakingBot) => {
 			}
 
 			incidentStart(robot, match[1], message.user.id);
-		},
-	);
-
-	robot.hear(
-		/^\.low\b\s+(\S.*)$/i,
-		{ id: "incident.start:low" },
-		({ envelope: { room }, match, message }) => {
-			const { breakingMainRoom, priorities } = robot.config;
-
-			if (room !== breakingMainRoom) {
-				return robot.adapter.sendError(
-					room,
-					`\`.start\` me up over in ${robot.adapter.fmtRoom(breakingMainRoom)}`,
-					message.id,
-				);
-			}
-
-			incidentStart(robot, match[1], message.user.id, priorities.defaultLow);
 		},
 	);
 
@@ -709,6 +690,31 @@ export default async (robot: BreakingBot) => {
 			incidentTutorial(robot, room, message.user.id, message.id);
 		},
 	);
+
+	// aliased commands
+	const { priorities } = robot.config.priorities;
+
+	for (const [key, value] of Object.entries(priorities)) {
+		for (const command of value.aliases) {
+			robot.hear(
+				new RegExp(`^\\.${command}\\s+(.+)$`, "i"),
+				{ id: `incident.start:${command}` },
+				({ envelope: { room }, match, message }) => {
+					const { breakingMainRoom } = robot.config;
+
+					if (room !== breakingMainRoom) {
+						return robot.adapter.sendError(
+							room,
+							`\`.${command}\` me up over in ${robot.adapter.fmtRoom(breakingMainRoom)}`,
+							message.id,
+						);
+					}
+
+					incidentStart(robot, match[1], message.user.id, Number(key));
+				},
+			);
+		}
+	}
 
 	robot.catchAll(({ message }) => {
 		// biome-ignore lint/correctness/noConstantCondition: hotfix

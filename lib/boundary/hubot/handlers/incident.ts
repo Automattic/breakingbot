@@ -1058,6 +1058,7 @@ export const incidentSetPriority = async (
 	createdBy: string,
 	messageId?: string,
 ) => {
+	const { config } = robot;
 	const incident = robot.incidents[room].data();
 
 	if (!isValidPriority(priority)) {
