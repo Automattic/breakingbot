@@ -26,7 +26,7 @@
 		"hubot": "11.1.4",
 		"jssm": "github:mhsdef/jssm#node-ts-esm-yaaay",
 		"luxon": "3.5.0",
-		"pg": "8.12.0",
+		"pg": "8.13.0",
 		"sugar-date": "2.0.6"
 	},
 	"optionalDependencies": {
