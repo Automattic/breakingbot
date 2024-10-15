@@ -13,5 +13,6 @@ export const devConfig: AppConfig = {
 	breakingRoomPrefix: "breaking-dev-",
 	commPlatform: devSlackConfig,
 	priorities: priorityConfig,
+	breakingAllowMultiRoles: false,
 	runbookRootUrl: "https://automattic.com",
 } as const;

@@ -460,6 +460,16 @@ export const incidentSetPoint = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, point)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, point, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
+
 	if (point === incident.point) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
 	}
@@ -510,6 +520,16 @@ export const incidentSetComms = async (
 	messageId?: string,
 ) => {
 	const incident = robot.incidents[room].data();
+
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, comms)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, comms, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
 
 	if (comms === incident.comms) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
@@ -562,6 +582,16 @@ export const incidentSetTriage = async (
 ) => {
 	const incident = robot.incidents[room].data();
 
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, triage)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, triage, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
+
 	if (triage === incident.triage) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
 	}
@@ -608,6 +638,16 @@ export const incidentSetEngLead = async (
 	messageId?: string,
 ) => {
 	const incident = robot.incidents[room].data();
+
+	if (
+		robot.config.breakingAllowMultiRoles === false &&
+		isUserAlreadyInRole(incident, engLead)
+	) {
+		const tasks = getUserAlreadyInRoleErrorMsg(robot, room, engLead, messageId);
+		if (tasks.length) {
+			return Promise.allSettled(tasks);
+		}
+	}
 
 	if (engLead === incident.engLead) {
 		return robot.adapter.reactToMessage(room, "ok_hand", messageId);
@@ -1386,4 +1426,51 @@ const permalink = async (
 	messageId: string | undefined,
 ) => {
 	return messageId ? await adapter.getPermalink(room, messageId) : undefined;
+};
+
+export const isUserAlreadyInRole = (incident: Incident, user: string) => {
+	return [
+		incident.comms,
+		incident.point,
+		incident.engLead,
+		incident.triage,
+	].includes(user);
+};
+
+export const getUserAlreadyInRoleErrorMsg = (
+	robot: BreakingBot,
+	room: string,
+	user: string,
+	messageId?: string,
+) => {
+	let currentRole = null;
+	const incident = robot.incidents[room].data();
+	const roles = {
+		comms: incident.comms,
+		point: incident.point,
+		engLead: incident.engLead,
+		triage: incident.triage,
+	};
+
+	for (const [role, roleUser] of Object.entries(roles)) {
+		if (user === roleUser) {
+			currentRole = role;
+			break;
+		}
+	}
+
+	if (currentRole) {
+		const tasks = [];
+		tasks.push(
+			robot.adapter.replyToMessage(
+				room,
+				`Sorry, you're already assigned to ${currentRole}!`,
+				messageId,
+			),
+		);
+		tasks.push(robot.adapter.reactToMessage(room, "no_entry", messageId));
+		return tasks;
+	}
+
+	return [];
 };

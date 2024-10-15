@@ -5,6 +5,7 @@ export type AppConfig = {
 	breakingMainRoom: string;
 	breakingNotifyRoom?: string;
 	breakingRoomPrefix: string;
+	breakingAllowMultiRoles: boolean;
 	commPlatform: CommPlatformConfig;
 	componentListUrl?: string;
 	issueTracker?: IssueTrackerConfig;
